@@ -1,30 +1,29 @@
 import json
 from scraper import Scraper
+from flask import Flask, render_template
 
-product_id = '103735237'
+#product_id = '103735237'
 #96092975 - hulajnoga xiaomi
 #103735237 - telewizor
 
-opinions_object = {}
+#with open('opinions.json', 'w') as jsonfile:
+#    json.dump(opinions_object, jsonfile, indent=4)
 
-ceneo_scraper = Scraper(product_id)
-opinions = ceneo_scraper.get_all_opinions()
+app = Flask(__name__, template_folder="templates")
 
-for opinion in opinions:
-    opinionId = ceneo_scraper.get_data_entry_id(opinion)
-    opinions_object[opinionId] = {}
+@app.route("/")
+def homePage():
+    return render_template('homepage/homepage.html')
 
-    opinions_object[opinionId]['authorName'] = ceneo_scraper.get_author_name(opinion)
-    opinions_object[opinionId]['recommended'] = ceneo_scraper.get_recommendation(opinion)
-    opinions_object[opinionId]['postScoreCount'] = ceneo_scraper.get_post_score_count(opinion)
-    opinions_object[opinionId]['buyConfirmed'] = ceneo_scraper.get_buy_confirmed(opinion)
-    opinions_object[opinionId]['opinionDate'] = ceneo_scraper.get_opinion_date(opinion)
-    opinions_object[opinionId]['buyDate'] = ceneo_scraper.get_buy_date(opinion)
-    opinions_object[opinionId]['yesVotes'] = ceneo_scraper.get_yes_votes_count(opinion)
-    opinions_object[opinionId]['noVotes'] = ceneo_scraper.get_no_votes_count(opinion)
-    opinions_object[opinionId]['text'] = ceneo_scraper.get_opinion_text(opinion)
-    opinions_object[opinionId]['positives'] = ceneo_scraper.get_positives(opinion)
-    opinions_object[opinionId]['negatives'] = ceneo_scraper.get_negatives(opinion)
+@app.route("/extraction")
+def extractionPage():
+    return render_template('extraction/extraction.html')
 
-with open('opinions.json', 'w') as jsonfile:
-    json.dump(opinions_object, jsonfile, indent=4)
+@app.route("/product/<productId>")
+def productPage(productId):
+    ceneo_scraper = Scraper(productId)
+    opinions_object = ceneo_scraper.get_all_opinions()
+    return render_template('product/product.html', opinions=opinions_object)
+
+if __name__ == '__main__':
+    app.run()

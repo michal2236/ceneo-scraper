@@ -13,7 +13,26 @@ class Scraper:
         for o in opinionsElements:
             if o.has_attr('data-entry-id'):
                 filteredOpinionsElements.append(o)
-        return filteredOpinionsElements
+        return self.convert_to_json(filteredOpinionsElements)
+
+    def convert_to_json(self, opinions):
+        opinions_object = {}
+        for opinion in opinions:
+            opinionId = self.get_data_entry_id(opinion)
+            opinions_object[opinionId] = {}
+
+            opinions_object[opinionId]['authorName'] = self.get_author_name(opinion)
+            opinions_object[opinionId]['recommended'] = self.get_recommendation(opinion)
+            opinions_object[opinionId]['postScoreCount'] = self.get_post_score_count(opinion)
+            opinions_object[opinionId]['buyConfirmed'] = self.get_buy_confirmed(opinion)
+            opinions_object[opinionId]['opinionDate'] = self.get_opinion_date(opinion)
+            opinions_object[opinionId]['buyDate'] = self.get_buy_date(opinion)
+            opinions_object[opinionId]['yesVotes'] = self.get_yes_votes_count(opinion)
+            opinions_object[opinionId]['noVotes'] = self.get_no_votes_count(opinion)
+            opinions_object[opinionId]['text'] = self.get_opinion_text(opinion)
+            opinions_object[opinionId]['positives'] = self.get_positives(opinion)
+            opinions_object[opinionId]['negatives'] = self.get_negatives(opinion)
+        return opinions_object
 
     def get_data_entry_id(self, opinion):
         return opinion['data-entry-id']
@@ -81,19 +100,3 @@ class Scraper:
                 for itemElement in itemElements:
                     negativeOpinions.append(itemElement.text)
         return negativeOpinions
-
-        
-    
-
-#url = "https://www.ceneo.pl/96092975#tab=reviews"
-#response = requests.get(url)
-#page_dom = BeautifulSoup(response.text, 'html.parser')
-#print(page_dom.prettify())
-
-#opinia - user-post__author-recomendation
-#user name - user-post__author-name
-#treść - user-post__text
-#liczba gwiazdek - user-post__score-count
-#zalety - review-feature__title review-feature__title--positives
-#wady - review-feature__title review-feature__title--negatives
-#dla ilu przydatna - 

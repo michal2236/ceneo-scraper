@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ceneo Web Scraper</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="{{url_for('static', filename='styles/extraction.css')}}"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo"
+          ><i class="large material-icons">code</i>Ceneo Web Scraper</a
+        >
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="/">Strona główna</a></li>
+          <li><a href="/extraction">Ekstrakcja opinii</a></li>
+          <li><a href="/product-list">Lista produktów</a></li>
+          <li><a href="/author">O autorze</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="content">
+      <div class="row">
+        <div class="row">
+          <div class="row-centered-content">
+            <div class="input-field">
+              <i class="material-icons prefix">keyboard_arrow_right</i>
+              <textarea
+                id="icon_prefix2"
+                class="materialize-textarea product-id-textarea"
+              ></textarea>
+              <label for="icon_prefix2">ID produktu</label>
+            </div>
+            <button
+              class="btn waves-effect waves-light check-opinions-button"
+              name="action"
+            >
+              Zobacz opinie
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document
+        .querySelector(".check-opinions-button")
+        .addEventListener("click", () => {
+          window.location.href = `/product/${
+            document.querySelector(".product-id-textarea").value
+          }`;
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>
