@@ -13,6 +13,18 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css"
+    />
+    <link
+      href="{{url_for('static', filename='styles/product.css')}}"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <nav>
@@ -28,7 +40,116 @@
         </ul>
       </div>
     </nav>
-    Product {{opinions}}
+    <div class="buttons_container">
+      <button class="waves-effect waves-light btn download_json_button">
+        <i class="material-icons left">file_download</i>Pobierz JSON
+      </button>
+      <button class="waves-effect waves-light btn">
+        <i class="material-icons left">show_chart</i>Statystyki
+      </button>
+    </div>
+    <table
+      data-toggle="table"
+      data-classes="table table-hover table-condensed"
+      data-striped="true"
+      data-sort-name="author_name"
+      data-sort-order="asc"
+    >
+      <thead>
+        <tr>
+          <th class="col-xs-1" data-field="opinion_id" data-sortable="true">
+            ID opinii
+          </th>
+          <th class="col-xs-1" data-field="author_name" data-sortable="true">
+            Nazwa autora
+          </th>
+          <th class="col-xs-6" data-field="recommended" data-sortable="true">
+            Czy poleca
+          </th>
+          <th
+            class="col-xs-6"
+            data-field="post_core_count"
+            data-sortable="true"
+          >
+            Liczba gwiazdek
+          </th>
+          <th class="col-xs-6" data-field="buy_confirmed" data-sortable="true">
+            Potwierdzony zakup
+          </th>
+          <th class="col-xs-6" data-field="opinion_date" data-sortable="true">
+            Data wystawienia opinii
+          </th>
+          <th class="col-xs-6" data-field="buy_date" data-sortable="true">
+            Data zakupu
+          </th>
+          <th class="col-xs-6" data-field="yes_votes" data-sortable="true">
+            Ilość głosów na tak
+          </th>
+          <th class="col-xs-6" data-field="no_votes" data-sortable="true">
+            Ilość głosów na nie
+          </th>
+          <th class="col-xs-6" data-field="text" data-sortable="true">
+            Treść opinii
+          </th>
+          <th class="col-xs-6" data-field="positives" data-sortable="true">
+            Zalety
+          </th>
+          <th class="col-xs-6" data-field="negatives" data-sortable="true">
+            Wady
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {%for opinion in opinions.items()%}
+        <tr id="tr-id-2" class="tr-class-2">
+          <td>{{ opinion[0] }}</td>
+          <td>{{ opinion[1].authorName }}</td>
+          <td>{{ opinion[1].recommended }}</td>
+          <td>{{ opinion[1].postScoreCount }}</td>
+          <td>{{ opinion[1].buyConfirmed }}</td>
+          <td>{{ opinion[1].opinionDate }}</td>
+          <td>{{ opinion[1].buyDate }}</td>
+          <td>{{ opinion[1].yesVotes }}</td>
+          <td>{{ opinion[1].noVotes }}</td>
+          <td>{{ opinion[1].text }}</td>
+          <td>
+            {%for positive in opinion[1].positives%}
+            <li>{{ positive }}</li>
+            {%endfor%}
+          </td>
+          <td>
+            {%for negative in opinion[1].negatives%}
+            <li>{{ negative }}</li>
+            {%endfor%}
+          </td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+    <script>
+      document
+        .querySelector(".download_json_button")
+        .addEventListener("click", () => {
+          let opinionsJson = "{{ opinions }}";
+          opinionsJson = opinionsJson
+            .replace(/&#39;/gm, '"')
+            .replace(/True/gm, "true")
+            .replace(/False/gm, "false")
+            .replace(/None/gm, "null")
+            .replace(/\n/gm, "");
+          const dataStr =
+            "data:text/json;charset=utf-8," + encodeURIComponent(opinionsJson);
+          const downloadAnchorNode = document.createElement("a");
+          downloadAnchorNode.setAttribute("href", dataStr);
+          downloadAnchorNode.setAttribute("download", "opinions.json");
+          document.body.appendChild(downloadAnchorNode); // required for firefox
+          downloadAnchorNode.click();
+          downloadAnchorNode.remove();
+        });
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
   </body>
 </html>

@@ -1,0 +1,14 @@
+.buttons_container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.btn {
+  outline: none !important;
+}
+
+.download_json_button {
+  margin-right: 10px;
+}
