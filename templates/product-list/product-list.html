@@ -13,6 +13,10 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <link
+      href="{{url_for('static', filename='styles/product-list.css')}}"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <nav>
@@ -21,14 +25,15 @@
           ><i class="large material-icons">code</i>Ceneo Web Scraper</a
         >
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li class="active"><a href="/">Strona główna</a></li>
+          <li><a href="/">Strona główna</a></li>
           <li><a href="/extraction">Ekstrakcja opinii</a></li>
-          <li><a href="/product-list">Lista produktów</a></li>
+          <li class="active"><a href="/product-list">Lista produktów</a></li>
           <li><a href="/author">O autorze</a></li>
         </ul>
       </div>
     </nav>
-    Homepage
+    <div class="content"></div>
+    <script></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   </body>
 </html>

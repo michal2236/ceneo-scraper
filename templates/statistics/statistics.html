@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ceneo Web Scraper</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="{{url_for('static', filename='styles/statistics.css')}}"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo"
+          ><i class="large material-icons">code</i>Ceneo Web Scraper</a
+        >
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="/">Strona główna</a></li>
+          <li><a href="/extraction">Ekstrakcja opinii</a></li>
+          <li><a href="/product-list">Lista produktów</a></li>
+          <li><a href="/author">O autorze</a></li>
+        </ul>
+      </div>
+    </nav>
+    <a class="waves-effect waves-light btn back-button"
+      ><i class="material-icons left">arrow_back</i>Powrót do strony produktu</a
+    >
+    <div class="content">
+      <h2 class="chart-title">Podsumowanie ocen produktu</h2>
+      <canvas id="barChart" width="1200" height="600"></canvas>
+      <h2 class="chart-title">Podsumowanie rekomendacji produktu</h2>
+      <canvas
+        id="pieChart"
+        style="margin-bottom: 140px"
+        width="1200"
+        height="600"
+      ></canvas>
+    </div>
+    <script>
+      const barChartCanvasCtx = document
+        .getElementById("barChart")
+        .getContext("2d");
+      const pieChartCanvasCtx = document
+        .getElementById("pieChart")
+        .getContext("2d");
+
+      let opinionsJson = "{{ opinions }}";
+      opinionsJson = JSON.parse(
+        opinionsJson
+          .replace(/&#39;/gm, '"')
+          .replace(/True/gm, "true")
+          .replace(/False/gm, "false")
+          .replace(/None/gm, "null")
+          .replace(/\n/gm, "")
+      );
+
+      //BAR CAHART
+      const starsSet = new Set(
+        Object.values(opinionsJson)
+          .map((opinion) => opinion.postScoreCount)
+          .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
+      );
+      const barChartStarsArray = Array.from(starsSet);
+      const barChartStarsSumArray = barChartStarsArray.map((stars) =>
+        Object.values(opinionsJson).reduce(
+          (counter, opinion) =>
+            opinion.postScoreCount == stars ? counter + 1 : counter,
+          0
+        )
+      );
+
+      const barChart = new Chart(barChartCanvasCtx, {
+        type: "bar",
+        data: {
+          labels: barChartStarsArray,
+          datasets: [
+            {
+              label: "# liczba osób oceniajacych",
+              data: barChartStarsSumArray,
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+          title: {
+            display: true,
+            text: "Podsumowanie ocen użytkowników",
+          },
+        },
+      });
+      //BAR CHART - END
+
+      //PIE CHART
+
+      const positiveRecommendationCount = Object.values(opinionsJson).reduce(
+        (counter, opinion) => (opinion.recommended ? counter + 1 : counter),
+        0
+      );
+      const negativeRecommendationCount = Object.values(opinionsJson).reduce(
+        (counter, opinion) => (!opinion.recommended ? counter + 1 : counter),
+        0
+      );
+
+      const pieChart = new Chart(pieChartCanvasCtx, {
+        type: "pie",
+        data: {
+          labels: [
+            "Ilość osób rekomendujących produkt",
+            "Ilość osób nie rekomendujących produktu",
+          ],
+          datasets: [
+            {
+              label: "Podsumowanie rekomendacji produktu",
+              data: [positiveRecommendationCount, negativeRecommendationCount],
+              backgroundColor: ["#2ecc71", "#e74c3c"],
+              hoverOffset: 4,
+            },
+          ],
+        },
+        options: {
+          responsive: false,
+        },
+      });
+
+      //PIE CHART - END
+
+      document.querySelector(".back-button").addEventListener("click", () => {
+        window.location.href = "/product/{{ productId }}";
+      });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>

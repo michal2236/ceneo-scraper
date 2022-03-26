@@ -8,6 +8,7 @@ class Scraper:
     def get_all_opinions(self):
         response = requests.get(f"https://www.ceneo.pl/{self.productId}#tab=reviews")
         page_dom = BeautifulSoup(response.text, 'html.parser')
+        product_name = page_dom.find("h3", class_="product-top__product-info__name")
         opinionsElements = page_dom.find_all("div", attrs={"class": "user-post__card"})
         filteredOpinionsElements = []
         for o in opinionsElements:
@@ -20,7 +21,6 @@ class Scraper:
         for opinion in opinions:
             opinionId = self.get_data_entry_id(opinion)
             opinions_object[opinionId] = {}
-
             opinions_object[opinionId]['authorName'] = self.get_author_name(opinion)
             opinions_object[opinionId]['recommended'] = self.get_recommendation(opinion)
             opinions_object[opinionId]['postScoreCount'] = self.get_post_score_count(opinion)

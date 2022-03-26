@@ -10,6 +10,8 @@ from flask import Flask, render_template
 
 app = Flask(__name__, template_folder="templates")
 
+all_opinions = {} #productId - opinions json
+
 @app.route("/")
 def homePage():
     return render_template('homepage/homepage.html')
@@ -22,8 +24,18 @@ def extractionPage():
 def productPage(productId):
     ceneo_scraper = Scraper(productId)
     opinions_object = ceneo_scraper.get_all_opinions()
+    all_opinions[productId] = opinions_object
+    return render_template('product/product.html', opinions=opinions_object, productId=productId)
 
-    return render_template('product/product.html', opinions=opinions_object)
+@app.route("/product/<productId>/statistics")
+def productStatisticsPage(productId):
+    global product_opinions
+    product_opinions = all_opinions[productId]
+    return render_template('statistics/statistics.html', opinions=product_opinions, productId=productId)
+
+@app.route("/product-list")
+def productListPage():
+    return render_template('product-list/product-list.html')
 
 if __name__ == '__main__':
     app.run()

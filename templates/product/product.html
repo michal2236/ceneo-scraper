@@ -15,16 +15,14 @@
     />
     <link
       rel="stylesheet"
-      href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css"
+      type="text/css"
+      href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"
     />
     <link
       href="{{url_for('static', filename='styles/product.css')}}"
       rel="stylesheet"
     />
+    <script src="//code.jquery.com/jquery.js"></script>
   </head>
   <body>
     <nav>
@@ -44,64 +42,30 @@
       <button class="waves-effect waves-light btn download_json_button">
         <i class="material-icons left">file_download</i>Pobierz JSON
       </button>
-      <button class="waves-effect waves-light btn">
+      <button class="waves-effect waves-light btn statistics_button">
         <i class="material-icons left">show_chart</i>Statystyki
       </button>
     </div>
-    <table
-      data-toggle="table"
-      data-classes="table table-hover table-condensed"
-      data-striped="true"
-      data-sort-name="author_name"
-      data-sort-order="asc"
-    >
+    <table id="opinions-table" class="display nowrap" style="width: 100%">
       <thead>
         <tr>
-          <th class="col-xs-1" data-field="opinion_id" data-sortable="true">
-            ID opinii
-          </th>
-          <th class="col-xs-1" data-field="author_name" data-sortable="true">
-            Nazwa autora
-          </th>
-          <th class="col-xs-6" data-field="recommended" data-sortable="true">
-            Czy poleca
-          </th>
-          <th
-            class="col-xs-6"
-            data-field="post_core_count"
-            data-sortable="true"
-          >
-            Liczba gwiazdek
-          </th>
-          <th class="col-xs-6" data-field="buy_confirmed" data-sortable="true">
-            Potwierdzony zakup
-          </th>
-          <th class="col-xs-6" data-field="opinion_date" data-sortable="true">
-            Data wystawienia opinii
-          </th>
-          <th class="col-xs-6" data-field="buy_date" data-sortable="true">
-            Data zakupu
-          </th>
-          <th class="col-xs-6" data-field="yes_votes" data-sortable="true">
-            Ilość głosów na tak
-          </th>
-          <th class="col-xs-6" data-field="no_votes" data-sortable="true">
-            Ilość głosów na nie
-          </th>
-          <th class="col-xs-6" data-field="text" data-sortable="true">
-            Treść opinii
-          </th>
-          <th class="col-xs-6" data-field="positives" data-sortable="true">
-            Zalety
-          </th>
-          <th class="col-xs-6" data-field="negatives" data-sortable="true">
-            Wady
-          </th>
+          <th>ID opinii</th>
+          <th>Nazwa autora</th>
+          <th>Czy poleca</th>
+          <th>Liczba gwiazdek</th>
+          <th>Potwierdzony zakup</th>
+          <th>Data wystawienia opinii</th>
+          <th>Data zakupu</th>
+          <th>Ilość głosów na tak</th>
+          <th>Ilość głosów na nie</th>
+          <th>Treść opinii</th>
+          <th>Zalety</th>
+          <th>Wady</th>
         </tr>
       </thead>
       <tbody>
         {%for opinion in opinions.items()%}
-        <tr id="tr-id-2" class="tr-class-2">
+        <tr>
           <td>{{ opinion[0] }}</td>
           <td>{{ opinion[1].authorName }}</td>
           <td>{{ opinion[1].recommended }}</td>
@@ -113,13 +77,11 @@
           <td>{{ opinion[1].noVotes }}</td>
           <td>{{ opinion[1].text }}</td>
           <td>
-            {%for positive in opinion[1].positives%}
-            <li>{{ positive }}</li>
+            {%for positive in opinion[1].positives%} &#10140; {{ positive }}
             {%endfor%}
           </td>
           <td>
-            {%for negative in opinion[1].negatives%}
-            <li>{{ negative }}</li>
+            {%for negative in opinion[1].negatives%} &#10140; {{ negative }}
             {%endfor%}
           </td>
         </tr>
@@ -146,10 +108,24 @@
           downloadAnchorNode.click();
           downloadAnchorNode.remove();
         });
+
+      document
+        .querySelector(".statistics_button")
+        .addEventListener("click", () => {
+          window.location.href = "/product/{{productId}}/statistics";
+        });
+    </script>
+    <script>
+      $(document).ready(function () {
+        $("#opinions-table").DataTable({
+          scrollX: true,
+        });
+      });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="//code.jquery.com/jquery.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"
+    ></script>
   </body>
 </html>
