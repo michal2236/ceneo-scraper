@@ -13,18 +13,18 @@ class Opinion:
         self.positives = positives
         self.negatives = negatives
 
-    def get_opinion_object(self):
-            opinionId = self.opinion_id
-            opinion_object[opinionId] = {}
-            opinion_object[opinionId]['authorName'] = self.author_name
-            opinion_object[opinionId]['recommended'] = self.recommended
-            opinion_object[opinionId]['postScoreCount'] = self.post_score_count
-            opinion_object[opinionId]['buyConfirmed'] = self.buy_confirmed
-            opinion_object[opinionId]['opinionDate'] = self.opinion_date
-            opinion_object[opinionId]['buyDate'] = self.buy_date
-            opinion_object[opinionId]['yesVotes'] = self.yes_votes
-            opinion_object[opinionId]['noVotes'] = self.no_votes
-            opinion_object[opinionId]['text'] = self.text
-            opinion_object[opinionId]['positives'] = self.positives
-            opinion_object[opinionId]['negatives'] = self.negatives
+    def get_opinion_jsonable_object(self):
+            opinion_object = {}
+            opinion_object[self.opinion_id] = {}
+            opinion_object[self.opinion_id]['authorName'] = self.author_name
+            opinion_object[self.opinion_id]['recommended'] = self.recommended
+            opinion_object[self.opinion_id]['postScoreCount'] = self.post_score_count
+            opinion_object[self.opinion_id]['buyConfirmed'] = self.buy_confirmed
+            opinion_object[self.opinion_id]['opinionDate'] = self.opinion_date
+            opinion_object[self.opinion_id]['buyDate'] = self.buy_date
+            opinion_object[self.opinion_id]['yesVotes'] = self.yes_votes
+            opinion_object[self.opinion_id]['noVotes'] = self.no_votes
+            opinion_object[self.opinion_id]['text'] = self.text
+            opinion_object[self.opinion_id]['positives'] = self.positives
+            opinion_object[self.opinion_id]['negatives'] = self.negatives
             return opinion_object
