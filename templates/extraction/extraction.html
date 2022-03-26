@@ -21,7 +21,7 @@
   <body>
     <nav>
       <div class="nav-wrapper">
-        <a href="#" class="brand-logo"
+        <a href="/" class="brand-logo"
           ><i class="large material-icons">code</i>Ceneo Web Scraper</a
         >
         <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -32,6 +32,9 @@
         </ul>
       </div>
     </nav>
+    <div class="error_notification">
+      Produkt nie ma opinii lub ID produktu jest błędne
+    </div>
     <div class="content">
       <div class="row">
         <div class="row">
@@ -56,6 +59,10 @@
       </div>
     </div>
     <script>
+      const isError = JSON.parse("{{ error }}".toLocaleLowerCase());
+      if (isError)
+        document.querySelector(".error_notification").style.display = "block";
+
       document
         .querySelector(".check-opinions-button")
         .addEventListener("click", () => {

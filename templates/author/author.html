@@ -14,7 +14,7 @@
       rel="stylesheet"
     />
     <link
-      href="{{url_for('static', filename='styles/homepage.css')}}"
+      href="{{url_for('static', filename='styles/author.css')}}"
       rel="stylesheet"
     />
   </head>
@@ -25,35 +25,28 @@
           ><i class="large material-icons">code</i>Ceneo Web Scraper</a
         >
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li class="active"><a href="/">Strona główna</a></li>
+          <li><a href="/">Strona główna</a></li>
           <li><a href="/extraction">Ekstrakcja opinii</a></li>
           <li><a href="/product-list">Lista produktów</a></li>
-          <li><a href="/author">O autorze</a></li>
+          <li class="active"><a href="/author">O autorze</a></li>
         </ul>
       </div>
     </nav>
     <div class="content">
-      <h3>Cel aplikacji</h3>
+      <h3>O autorze</h3>
       <p class="flow-text">
-        Aplikacja służy do pobierania opinii danego produktu oraz wyświetlania
-        jego statystyk. Można także pobrać zawartość opinii w formacie JSON
+        Imię i nazwisko: Michał Gondek
+        <br />
+        Numer albumu: 223630
+        <br />
+        Kierunek: Informatyka stosowana
+        <br />
+        Rok: I
+        <br />
+        Semestr: II
+        <br />
+        Tryb: Niestacjonarny
       </p>
-      <h3>Opis działania aplikacji</h3>
-      <p class="flow-text">
-        Po wpisaniu id produktu w zakładce Ekstrakcja aplikacja wysyła requesty
-        pobierające HTML strony z opiniami ceneo, następnie wyciąga dane z
-        elementów DOM i zapisuje do obiektu. Bazując na tym obiekcie dane są
-        wyświetlane w tabeli, pobierane jako JSON oraz wyświetlane statystyki.
-      </p>
-      <h3>Zastosowane biblioteki</h3>
-      <ul>
-        <li>Materialize</li>
-        <li>Flask</li>
-        <li>Chart.js</li>
-        <li>datatables.min.js</li>
-      </ul>
-      <h3>Zastosowane podejścia</h3>
-      <p class="flow-text">Podejście obiektowe</p>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   </body>

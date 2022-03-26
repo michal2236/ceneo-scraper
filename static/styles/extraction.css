@@ -25,3 +25,13 @@ body {
 .check-opinions-button {
   margin-left: 10px;
 }
+
+.error_notification {
+  width: 100%;
+  background-color: #e74c3c;
+  padding: 12px 0;
+  text-align: center;
+  color: white;
+  margin-top: 30px;
+  display: none;
+}

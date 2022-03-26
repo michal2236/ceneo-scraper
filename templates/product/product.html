@@ -23,11 +23,15 @@
       rel="stylesheet"
     />
     <script src="//code.jquery.com/jquery.js"></script>
+    <script>
+      const error = JSON.parse("{{ error }}".toLowerCase());
+      if (error) window.location.href = "/extraction?error=true";
+    </script>
   </head>
   <body>
     <nav>
       <div class="nav-wrapper">
-        <a href="#" class="brand-logo"
+        <a href="/" class="brand-logo"
           ><i class="large material-icons">code</i>Ceneo Web Scraper</a
         >
         <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -92,21 +96,29 @@
       document
         .querySelector(".download_json_button")
         .addEventListener("click", () => {
-          let opinionsJson = "{{ opinions }}";
-          opinionsJson = opinionsJson
-            .replace(/&#39;/gm, '"')
-            .replace(/True/gm, "true")
-            .replace(/False/gm, "false")
-            .replace(/None/gm, "null")
-            .replace(/\n/gm, "");
-          const dataStr =
-            "data:text/json;charset=utf-8," + encodeURIComponent(opinionsJson);
-          const downloadAnchorNode = document.createElement("a");
-          downloadAnchorNode.setAttribute("href", dataStr);
-          downloadAnchorNode.setAttribute("download", "opinions.json");
-          document.body.appendChild(downloadAnchorNode); // required for firefox
-          downloadAnchorNode.click();
-          downloadAnchorNode.remove();
+          const currentUrlArray = window.location.href.split("/");
+          const currentHost = currentUrlArray.slice(0, -2).join("/");
+          fetch(`${currentHost}/get-opinions/{{ productId }}`).then(
+            (response) =>
+              response.json().then((opinions) => {
+                const opinionsJson = JSON.stringify(opinions).replace(
+                  /\\n/gm,
+                  ""
+                );
+                const dataStr =
+                  "data:text/json;charset=utf-8," +
+                  encodeURIComponent(opinionsJson);
+                const downloadAnchorNode = document.createElement("a");
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute(
+                  "download",
+                  `opinions_{{ productId }}.json`
+                );
+                document.body.appendChild(downloadAnchorNode); // required for firefox
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+              })
+          );
         });
 
       document

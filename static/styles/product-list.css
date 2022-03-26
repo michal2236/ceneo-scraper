@@ -1,0 +1,21 @@
+.product-icon-detail {
+  display: flex;
+}
+
+.card-content {
+  min-height: 250px;
+}
+
+.download_opinions_button {
+  cursor: pointer;
+}
+
+.product-name {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.product-name:hover {
+  color: #dddddd;
+  transform: scale(1.01);
+}
